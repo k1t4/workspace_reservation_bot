@@ -27,7 +27,8 @@ def authenticate_user(bot_instance: telebot.TeleBot, message: Message):
     tg_username: str = message.from_user.username
 
     if tg_username not in WHITE_LIST:
-        bot_instance.reply_to(message, "Sorry, I'm now allowed to speak with strangers. Contact my author")
+        bot_instance.reply_to(message, "Извините, мне не разрешают разговаривать "
+                                       "с незнакомцами, обратитесь к администратору")
         return CancelUpdate()
 
     tg_id: int = message.from_user.id
