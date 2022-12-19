@@ -4,8 +4,7 @@ from attrdict import AttrDict
 from telebot.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 from reservations_bot.models import User, Reservations
-from reservations_bot.settings import State
-
+from reservations_bot.settings import State, EXIT_MESSAGE
 
 NextMessage = Tuple[str, InlineKeyboardMarkup]
 
@@ -36,3 +35,10 @@ class BaseHandler:
             user_reservation_dates_keyboard.add(date_button)
 
         return user_reservation_dates_keyboard
+
+    @staticmethod
+    def _get_exit_keyboard() -> InlineKeyboardMarkup:
+        exit_button: InlineKeyboardButton = InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE)
+        exit_keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup().add(exit_button)
+
+        return exit_keyboard

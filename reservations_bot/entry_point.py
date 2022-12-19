@@ -7,7 +7,7 @@ from reservations_bot.handlers.base import NextMessage
 from reservations_bot.handlers.delete_reservation import DeleteReservationHandler
 from reservations_bot.handlers.read_reservation import ReadReservationHandler
 from reservations_bot.settings import State, EXIT_MESSAGE, RESERVATIONS_STATES_CREATE, RESERVATIONS_STATES_READ, \
-    RESERVATIONS_STATES_DELETE
+    RESERVATIONS_STATES_DELETE, logger
 
 
 @reservations_bot.message_handler(commands=["start"])

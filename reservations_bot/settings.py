@@ -1,15 +1,17 @@
+import logging
 import os
 from enum import Enum
 
 TOKEN = os.environ.get("BOT_TOKEN")
 
 WHITE_LIST = {
-    "kimtabris": "Nikita"
+    "kimtabris": "Nikita",
+    "MilaLemberg": "Mila",
 }
 
 HANDLERS = (
     "middleware",
-    "entry",
+    "entry_point",
 )
 
 REDIS_HOST = "localhost"
@@ -22,15 +24,15 @@ class State(Enum):
     START_RESERVATION_CREATE = 2
     CHOOSING_RESERVATION_DATE_CREATE = 3
     CHOOSING_RESERVATION_WORKSPACE_CREATE = 4
-    SUCCESS_CREATE = 5
+    FINISH_CREATE = 5
 
     START_RESERVATION_READ = 6
     CHOOSING_RESERVATION_DATE_READ = 7
-    SUCCESS_READ = 8
+    FINISH_READ = 8
 
     START_RESERVATION_DELETE = 9
     CHOOSING_RESERVATION_DATE_DELETE = 10
-    SUCCESS_DELETE = 11
+    FINISH_DELETE = 11
 
 
 EXIT_MESSAGE = "exit"
@@ -40,17 +42,19 @@ RESERVATIONS_STATES_CREATE = (
     State.START_RESERVATION_CREATE,
     State.CHOOSING_RESERVATION_DATE_CREATE,
     State.CHOOSING_RESERVATION_WORKSPACE_CREATE,
-    State.SUCCESS_CREATE
+    State.FINISH_CREATE
 )
 
 RESERVATIONS_STATES_READ = (
     State.START_RESERVATION_READ,
     State.CHOOSING_RESERVATION_DATE_READ,
-    State.SUCCESS_READ,
+    State.FINISH_READ,
 )
 
 RESERVATIONS_STATES_DELETE = (
     State.START_RESERVATION_DELETE,
     State.CHOOSING_RESERVATION_DATE_DELETE,
-    State.SUCCESS_DELETE,
+    State.FINISH_DELETE,
 )
+
+logger = logging.getLogger('reservations_bot')

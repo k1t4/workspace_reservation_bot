@@ -35,6 +35,6 @@ class ReadReservationHandler(BaseHandler):
         exit_button: InlineKeyboardButton = InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE)
         exit_keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup().add(exit_button)
 
-        self.session.state = State.SUCCESS_READ
+        self.session.state = State.FINISH_READ
 
         return next_text, exit_keyboard

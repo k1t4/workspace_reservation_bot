@@ -5,7 +5,7 @@ from attrdict import AttrDict
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from reservations_bot.handlers.base import BaseHandler, NextMessage
-from reservations_bot.models import WorkspaceID
+from reservations_bot.models import WorkspaceID, get_all_reserved_workspaces_for_date
 from reservations_bot.office_map import Status, get_workspace_statuses_for_date, get_office_map, \
     get_statuses_with_highlighted_workspace
 from reservations_bot.settings import State, EXIT_MESSAGE
@@ -41,6 +41,9 @@ class CreateReservationHandler(BaseHandler):
 
         session_data: AttrDict = self.session["data"]
         reservation_date: dt.date = session_data.reservation_date
+
+        if workspace_id in get_all_reserved_workspaces_for_date(reservation_date):  # race condition
+            return self._prepare_failure_state(failure_text="Не успели, место уже забронировано(")
 
         self.user.add_reservation(reservation_date, workspace_id)
 
@@ -82,10 +85,7 @@ class CreateReservationHandler(BaseHandler):
         return next_message_text, free_workspaces_keyboard
 
     def _prepare_success_state(self, reservation_date: dt.date, workspace_id: WorkspaceID) -> NextMessage:
-        # session_data: AttrDict = self.session["data"]
-        # session_data.clear()
-
-        self.session.state = State.SUCCESS_CREATE
+        self.session.state = State.FINISH_CREATE
 
         workspace_statuses: Dict[WorkspaceID, Status] = get_statuses_with_highlighted_workspace(workspace_id)
         map_with_highlighted_workspace: str = get_office_map(workspace_statuses)
@@ -93,10 +93,15 @@ class CreateReservationHandler(BaseHandler):
         next_text: str = (map_with_highlighted_workspace + "\n"
                           + f"Успешно забронировано место #{workspace_id} на {reservation_date}")
 
-        exit_keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup()
-
-        exit_button: InlineKeyboardButton = InlineKeyboardButton("Главное меню", callback_data=EXIT_MESSAGE)
-        exit_keyboard.add(exit_button)
+        exit_keyboard: InlineKeyboardMarkup = self._get_exit_keyboard()
 
         return next_text, exit_keyboard
 
+    def _prepare_failure_state(self, failure_text):
+        self.session.state = State.FINISH_CREATE
+
+        next_text: str = failure_text
+
+        exit_keyboard: InlineKeyboardMarkup = self._get_exit_keyboard()
+
+        return next_text, exit_keyboard
