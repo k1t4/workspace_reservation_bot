@@ -10,7 +10,7 @@ OFFICE_MAP = """
 
 {ws_2}2    4{ws_4}️{ws_6}6    8{ws_8}️
 
-                                9{ws_9}️
+✖        ✖ ✖️      9{ws_9}️
 """
 
 
@@ -21,7 +21,7 @@ WORKSPACES = [
 ]
 
 
-ATTACHED_WORKSPACES = [1, 2, 3, 4, 5, 7]
+ATTACHED_WORKSPACES = [1, 2, 3, 4, 7]
 
 
 class Status(Enum):

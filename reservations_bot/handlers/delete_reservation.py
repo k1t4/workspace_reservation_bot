@@ -28,7 +28,7 @@ class DeleteReservationHandler(BaseHandler):
     def _prepare_delete_success_page(self, reservation_date) -> NextMessage:
         self.session.state = State.FINISH_DELETE
 
-        next_message = f"Бронь на {reservation_date} успешно удалена"
+        next_message = f"Бронь на {self._get_date_with_week_day(reservation_date)} успешно удалена"
 
         exit_keyboard: InlineKeyboardMarkup = self._get_exit_keyboard()
 

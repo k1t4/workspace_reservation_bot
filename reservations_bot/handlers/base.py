@@ -1,10 +1,11 @@
+import datetime as dt
 from typing import Callable, Dict, Tuple
 
 from attrdict import AttrDict
 from telebot.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 from reservations_bot.models import User, Reservations
-from reservations_bot.settings import State, EXIT_MESSAGE
+from reservations_bot.settings import State, EXIT_MESSAGE, WEEK_DAYS
 
 NextMessage = Tuple[str, InlineKeyboardMarkup]
 
@@ -30,9 +31,11 @@ class BaseHandler:
 
         for reservation_date in user_reservations:
             date_button: InlineKeyboardButton = InlineKeyboardButton(
-                text=str(reservation_date), callback_data=reservation_date.isoformat())
+                text=self._get_date_with_week_day(reservation_date), callback_data=reservation_date.isoformat())
 
             user_reservation_dates_keyboard.add(date_button)
+
+        user_reservation_dates_keyboard.add(InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE))
 
         return user_reservation_dates_keyboard
 
@@ -42,3 +45,9 @@ class BaseHandler:
         exit_keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup().add(exit_button)
 
         return exit_keyboard
+
+    @staticmethod
+    def _get_date_with_week_day(date: dt.date) -> str:
+        week_day: str = WEEK_DAYS.get(date.weekday())
+
+        return f"{week_day} {date}"

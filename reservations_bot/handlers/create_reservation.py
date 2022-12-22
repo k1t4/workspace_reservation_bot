@@ -59,8 +59,11 @@ class CreateReservationHandler(BaseHandler):
 
         for date in next_week_days:
             if date not in user_reserved_days:
-                button: InlineKeyboardButton = InlineKeyboardButton(text=str(date), callback_data=date.isoformat())
+                button: InlineKeyboardButton = InlineKeyboardButton(
+                    text=self._get_date_with_week_day(date), callback_data=date.isoformat())
                 dates_keyboard.add(button)
+
+        dates_keyboard.add(InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE))
 
         return dates_keyboard
 
@@ -82,6 +85,8 @@ class CreateReservationHandler(BaseHandler):
 
             free_workspaces_keyboard.add(button)
 
+        free_workspaces_keyboard.add(InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE))
+
         return next_message_text, free_workspaces_keyboard
 
     def _prepare_success_state(self, reservation_date: dt.date, workspace_id: WorkspaceID) -> NextMessage:
@@ -90,8 +95,9 @@ class CreateReservationHandler(BaseHandler):
         workspace_statuses: Dict[WorkspaceID, Status] = get_statuses_with_highlighted_workspace(workspace_id)
         map_with_highlighted_workspace: str = get_office_map(workspace_statuses)
 
-        next_text: str = (map_with_highlighted_workspace + "\n"
-                          + f"Успешно забронировано место #{workspace_id} на {reservation_date}")
+        next_text: str = (f"{map_with_highlighted_workspace}\n"
+                          f"Успешно забронировано место #{workspace_id} "
+                          f"на {self._get_date_with_week_day(reservation_date)}")
 
         exit_keyboard: InlineKeyboardMarkup = self._get_exit_keyboard()
 

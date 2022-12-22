@@ -30,7 +30,8 @@ class ReadReservationHandler(BaseHandler):
         statuses: Dict[WorkspaceID, Status] = get_statuses_with_highlighted_workspace(reserved_workspace)
         map_with_highlighted_workspace: str = get_office_map(statuses)
 
-        next_text: str = f"Ваша бронь на {reservation_date.isoformat()}:\n" + map_with_highlighted_workspace
+        next_text: str = (f"Ваша бронь на {self._get_date_with_week_day(reservation_date)}:\n"
+                          f"{map_with_highlighted_workspace}")
 
         exit_button: InlineKeyboardButton = InlineKeyboardButton(text="Главное меню", callback_data=EXIT_MESSAGE)
         exit_keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup().add(exit_button)

@@ -5,8 +5,25 @@ from enum import Enum
 TOKEN = os.environ.get("BOT_TOKEN")
 
 WHITE_LIST = {
-    "kimtabris": "Nikita",
-    "MilaLemberg": "Mila",
+    "kimtabris": "Никита",
+    "MilaLemberg": "Мила",
+    "@GnomTv": "Иван",
+    "@Pihpoh_Atata": "Дима",
+    "@FieryDruid": "Павел",
+    "@demidos": "Саша",
+    "@MegaMaan": "Дима",
+    "@Ekaterina_Khudaya": "Катя",
+    "@Kiselq": "Саша",
+    "@Konstter": "Костя",
+    "@maxsheremeev": "Максим",
+    "@Gideon_Ravenor": "Федор",
+    "@Izelaw": "Сергей",
+    "@Lid_Liderk": "Виктор",
+    "@sergeykrupyanko": "Сергей",
+    "@Salykin": "Саша",
+    "@hpawa": "Паша",
+    "@ProofX": "Серега",
+    "@dema067": "Владислав",
 }
 
 HANDLERS = (
@@ -58,3 +75,14 @@ RESERVATIONS_STATES_DELETE = (
 )
 
 logger = logging.getLogger('reservations_bot')
+
+
+WEEK_DAYS = {
+    0: "понедельник",
+    1: "вторник",
+    2: "среда",
+    3: "четверг",
+    4: "пятница",
+    5: "суббота",
+    6: "воскресенье",
+}
